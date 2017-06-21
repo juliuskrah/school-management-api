@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Path("/v1") // <- required
-@Produces(MediaType.APPLICATION_JSON)
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 public class StudentService {
 	/**
 	 * 
@@ -43,7 +43,7 @@ public class StudentService {
 	 * @see http://docs.oracle.com/javaee/7/tutorial/jaxrs002.htm
 	 */
 	@GET
-	@Path("{id}")
+	@Path("{id}/student")
 	public Student getStudent(@PathParam("id") String id) {
 		log.info("Getting student...");
 		Student student = new Student();
@@ -67,7 +67,7 @@ public class StudentService {
 		log.info("Student: {}", student);
 		Response.ResponseBuilder builder = null;
 		builder = Response.status(Response.Status.CREATED)
-				.location(URI.create(String.format("/school-management/v1/%s", student.getId())))
+				.location(URI.create(String.format("/v1/%s/student", student.getId())))
 				// or .header(HttpHeaders.LOCATION, String.format(BASE_URL,
 				// student.getId()))
 				.entity(student);
