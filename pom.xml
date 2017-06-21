@@ -104,6 +104,20 @@
 		</dependency>
 	</dependencies>
 
+	<repositories>
+		<repository>
+			<id>redhat-ga-repository</id>
+			<name>Red Hat GA repository</name>
+			<url>http://maven.repository.redhat.com/ga/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>
