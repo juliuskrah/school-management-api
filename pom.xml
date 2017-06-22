@@ -19,11 +19,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.juliuskrah</groupId>
 	<artifactId>school-management</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>v1</version>
 	<packaging>war</packaging>
 
 	<properties>
+		<appassembler-maven-plugin.version>2.0.0</appassembler-maven-plugin.version>
 		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
+		<com.heroku.sdk.version>1.1.4</com.heroku.sdk.version>
+		<exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
 		<io.rest-assured.version>3.0.3</io.rest-assured.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -45,6 +48,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.glassfish.jersey</groupId>
+				<artifactId>jersey-bom</artifactId>
+				<version>${org.glassfish.jersey.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -53,12 +63,10 @@
 		<dependency><!-- Bootstrap for Servlet Container environments -->
 			<groupId>org.glassfish.jersey.containers</groupId>
 			<artifactId>jersey-container-servlet</artifactId>
-			<version>${org.glassfish.jersey.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-json-jackson</artifactId>
-			<version>${org.glassfish.jersey.version}</version>
 		</dependency>
 
 		<!-- Tomcat dependencies for embedded support -->
@@ -67,8 +75,13 @@
 			<artifactId>tomcat-embed-core</artifactId>
 			<version>${org.apache.tomcat.embed.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-jasper</artifactId>
+			<version>${org.apache.tomcat.embed.version}</version>
+		</dependency>
 
-		<!-- Lombok dependencies -->
+		<!-- Lombok dependencies [Generate common code fragments] -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -93,10 +106,9 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
 			<artifactId>jersey-test-framework-provider-jetty</artifactId>
-			<version>${org.glassfish.jersey.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<dependency> <!-- Fluent test library JSON and XML -->
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>${io.rest-assured.version}</version>
@@ -119,13 +131,61 @@
 	</repositories>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>${org.apache.maven.war.version}</version>
 				<configuration>
+					<!-- Maven needs to keep up -->
 					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<!-- Easy deployment to Heroku PaaS -->
+			<plugin>
+				<groupId>com.heroku.sdk</groupId>
+				<artifactId>heroku-maven-plugin</artifactId>
+				<version>${com.heroku.sdk.version}</version>
+			</plugin>
+			<!-- Builds an executable script [mvnw clean package && sh target/bin/school-management] -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>${appassembler-maven-plugin.version}</version>
+				<configuration>
+					<assembleDirectory>target</assembleDirectory>
+					<programs>
+						<program>
+							<mainClass>com.juliuskrah.ResourcePath</mainClass>
+							<name>${project.artifactId}</name>
+						</program>
+					</programs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>assemble</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Execute code from the command line [mvnw clean compile exec:java] -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${exec-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>com.juliuskrah.ResourcePath</mainClass>
+					<executable>maven</executable>
 				</configuration>
 			</plugin>
 		</plugins>
