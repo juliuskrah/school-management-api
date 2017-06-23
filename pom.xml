@@ -20,7 +20,7 @@
 	<groupId>com.juliuskrah</groupId>
 	<artifactId>school-management</artifactId>
 	<version>v1</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<properties>
 		<appassembler-maven-plugin.version>2.0.0</appassembler-maven-plugin.version>

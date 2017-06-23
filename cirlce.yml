@@ -1,3 +1,13 @@
 machine:
   java:
     version: oraclejdk8
+deployment:
+  staging:
+    branch: staging
+    heroku:
+      appname: dry-thicket-75684
+deployment:
+  production:
+    branch: master
+    heroku:
+      appname: school-management-rest
