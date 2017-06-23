@@ -6,7 +6,6 @@ deployment:
     branch: staging
     heroku:
       appname: dry-thicket-75684
-deployment:
   production:
     branch: master
     heroku:
