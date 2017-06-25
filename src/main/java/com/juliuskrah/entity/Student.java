@@ -18,9 +18,15 @@ package com.juliuskrah.entity;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @XmlRootElement
 public class Student {
 	private String id;
+
+	public Student(String id) {
+		this.id = id;
+	}
 }

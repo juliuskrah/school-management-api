@@ -1,4 +1,4 @@
-package com.juliuskrah.rest.v1;
+package com.juliuskrah.service.v1;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
@@ -37,63 +37,63 @@ public class StudentServiceTest extends JerseyTest {
 	}
 
 	@Test
-	public void testGet() {
+	public void testFindStudent() {
 		// @formatter:off
-		final String id = "abeiku";
-		final Student student = target("v1")
+		final String id = "1232";
+		final Student student = target("v1/students")
 				.path("{id}")
-				.path("student")
 				.resolveTemplate("id", id)
 				.request(MediaType.APPLICATION_JSON)
 				.get(Student.class);
-		assertEquals("abeiku", student.getId());
+		assertEquals("1232", student.getId());
 		// @formatter:on
 	}
 
 	@Test
-	public void testGetWithRestAssured() {
+	public void testFindStudentWithRestAssured() {
 		// @formatter:off
-		get("/v1/abeiku/student")
-		.then().body("id", equalTo("abeiku"))
+		get("/v1/students/1232")
+		.then().body("id", equalTo("1232"))
 		.statusCode(200);
 		// @formatter:on
 	}
 
 	@Test
-	public void testPost() {
+	public void testCreateStudent() {
 		// @formatter:off
 		Student student = new Student() {
 			{
-				setId("awesome");
+				setId("1241");
 			}
 		};
 
-		Response response = target("v1")
-				.path("add")
+		Response response = target("v1/students")
 				.request(MediaType.APPLICATION_JSON_TYPE)
 				.post(Entity.json(student));
 
 		assertThat(response.getStatus(), is(201));
 		assertThat(response.getLocation(), 
 				equalTo(URI.create(String
-						.format("http://localhost:9998/v1/%s/student", student.getId()))));
+						.format("http://localhost:9998/v1/students/%s", student.getId()))));
 		// @formatter:on
 	}
 
 	@Test
-	public void testPostWithRestAssured() {
+	public void testCreateStudentWithRestAssured() {
 		// @formatter:off
 		Map<String, String> student = new HashMap<>();
-		student.put("id", "awesome");
+		student.put("id", "1241");
 
 		given()
 		.contentType(MediaType.APPLICATION_JSON)
 		.body(student)
-		.when().post("/v1/add")
+		.when().post("/v1/students")
 		.then()
-		.body("id", equalTo("awesome"))
+		.body("id", equalTo("1241"))
 		.statusCode(201);
 		// @formatter:on
 	}
 
+	// TODO testFindAllStudents
+	// TODO testFindAllStudentWithRestAssured
 }

@@ -157,7 +157,7 @@
 					<assembleDirectory>target</assembleDirectory>
 					<programs>
 						<program>
-							<mainClass>com.juliuskrah.ResourcePath</mainClass>
+							<mainClass>com.juliuskrah.TomcatServer</mainClass>
 							<name>${project.artifactId}</name>
 						</program>
 					</programs>
