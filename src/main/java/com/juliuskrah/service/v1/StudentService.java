@@ -17,6 +17,7 @@ package com.juliuskrah.service.v1;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -75,9 +76,9 @@ public class StudentService {
 		student.setId(id);
 		Response.ResponseBuilder builder = null;
 
-		int index = Collections.binarySearch(students, student, (a, b) -> a.getId().compareTo(b.getId()));
+		int index = Collections.binarySearch(students, student, Comparator.comparing(Student::getId));
 
-		if (index > 0) {
+		if (index >= 0) {
 			builder = Response.ok()
 				.entity(students.get(index));
 		} else {
