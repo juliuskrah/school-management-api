@@ -2,17 +2,22 @@ package com.juliuskrah.service.v1;
 
 import static io.restassured.RestAssured.get;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -24,6 +29,7 @@ import org.junit.Test;
 import com.juliuskrah.entity.Student;
 
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 
 public class StudentServiceTest extends JerseyTest {
 	@BeforeClass
@@ -94,6 +100,22 @@ public class StudentServiceTest extends JerseyTest {
 		// @formatter:on
 	}
 
-	// TODO testFindAllStudents
-	// TODO testFindAllStudentWithRestAssured
+	@Test
+	public void testFindAllStudents() {
+		// @formatter:off
+		List<Student> students = target("v1/students")
+				.request(MediaType.APPLICATION_JSON_TYPE)
+				.get(new GenericType<List<Student>>(){});
+
+		assertThat(students, is(not(empty())));
+		// @formatter:on
+	}
+
+	@Test
+	public void testFindAllStudentWithRestAssured() {
+		get("/v1/students/")
+		.then().body("id", hasItems("1235", "1240"))
+		.statusCode(200)
+		.contentType(ContentType.JSON);
+	}
 }

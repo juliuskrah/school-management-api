@@ -9,6 +9,6 @@ This repository contains an application using JAX-RS to build RESTful service. T
 ```
 
 ## Deployment to Heroku
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://bitbucket.org/projectspartan/rest-service)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/juliuskrah/school-management-api)
 
 -- Other pipeline options
