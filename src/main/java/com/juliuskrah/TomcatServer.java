@@ -31,7 +31,7 @@ public class TomcatServer {
             } else {
                 root = new File(runningJarPath.substring(0, lastIndexOf));
             }
-            log.info("application resolved root folder: {}", root.getAbsolutePath());
+            log.debug("application resolved root folder: {}", root.getAbsolutePath());
             return root;
         } catch (URISyntaxException ex) {
             throw new RuntimeException(ex);
@@ -60,7 +60,7 @@ public class TomcatServer {
         //Set execution independent of current thread context classloader (compatibility with exec:java mojo)
         ctx.setParentClassLoader(ResourcePath.class.getClassLoader());
 
-        log.info("configuring app with basedir: {}", webContentFolder.getAbsolutePath());
+        log.debug("configuring app with basedir: {}", webContentFolder.getAbsolutePath());
 
         // Declare an alternative location for your "WEB-INF/classes" dir
         // Servlet 3.0 annotation will work
@@ -70,7 +70,7 @@ public class TomcatServer {
         WebResourceSet resourceSet;
         if (additionWebInfClassesFolder.exists()) {
             resourceSet = new DirResourceSet(resources, "/WEB-INF/classes", additionWebInfClassesFolder.getAbsolutePath(), "/");
-            log.info("loading WEB-INF resources from as '{}'", additionWebInfClassesFolder.getAbsolutePath());
+            log.debug("loading WEB-INF resources from as '{}'", additionWebInfClassesFolder.getAbsolutePath());
         } else {
             resourceSet = new EmptyResourceSet(resources);
         }

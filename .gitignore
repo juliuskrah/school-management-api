@@ -6,3 +6,4 @@ tomcat.*/
 .vscode/
 .idea/
 *.iml
+*.log

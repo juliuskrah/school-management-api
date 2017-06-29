@@ -27,6 +27,7 @@
 		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
 		<com.heroku.sdk.version>1.1.4</com.heroku.sdk.version>
 		<exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
+		<groovy.version>2.4.12</groovy.version>
 		<io.rest-assured.version>3.0.3</io.rest-assured.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -101,6 +102,12 @@
 			<version>${ch.qos.logback.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency><!-- Needed for [logback.groovy] -->
+            <groupId>org.codehaus.groovy</groupId>
+    		<artifactId>groovy</artifactId>
+    		<version>${groovy.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!-- Testing dependencies -->
 		<dependency>
@@ -112,6 +119,32 @@
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>${io.rest-assured.version}</version>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.groovy</groupId>
+    				<artifactId>groovy</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.codehaus.groovy</groupId>
+    				<artifactId>groovy-xml</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.codehaus.groovy</groupId>
+    				<artifactId>groovy-json</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+            <groupId>org.codehaus.groovy</groupId>
+    		<artifactId>groovy-xml</artifactId>
+    		<version>${groovy.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+            <groupId>org.codehaus.groovy</groupId>
+    		<artifactId>groovy-json</artifactId>
+    		<version>${groovy.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -158,7 +191,7 @@
 					<programs>
 						<program>
 							<mainClass>com.juliuskrah.TomcatServer</mainClass>
-							<name>${project.artifactId}</name>
+							<id>${project.artifactId}</id>
 						</program>
 					</programs>
 				</configuration>
@@ -184,7 +217,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<mainClass>com.juliuskrah.ResourcePath</mainClass>
+					<mainClass>com.juliuskrah.TomcatServer</mainClass>
 					<executable>maven</executable>
 				</configuration>
 			</plugin>
