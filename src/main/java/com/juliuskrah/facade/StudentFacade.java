@@ -13,8 +13,8 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.juliuskrah.service;
+package com.juliuskrah.facade;
 
-public class StudentService {
+public class StudentFacade {
 
 }

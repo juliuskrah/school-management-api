@@ -4,3 +4,6 @@
 target/
 tomcat.*/
 .vscode/
+.idea/
+*.iml
+*.log
