@@ -1,11 +1,6 @@
 package com.juliuskrah;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceSet;
@@ -16,8 +11,11 @@ import org.apache.catalina.webresources.EmptyResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
 import javax.servlet.ServletException;
-
-import lombok.extern.slf4j.Slf4j;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Slf4j
 public class TomcatServer {
@@ -37,8 +35,9 @@ public class TomcatServer {
             throw new RuntimeException(ex);
         }
     }
-	public static void main(String... cmd) throws LifecycleException, IOException, ServletException {
-		File root = getRootFolder();
+
+    public static void main(String... cmd) throws LifecycleException, IOException, ServletException {
+        File root = getRootFolder();
         System.setProperty("org.apache.catalina.startup.EXIT_ON_INIT_FAILURE", "true");
         Tomcat tomcat = new Tomcat();
         Path tempPath = Files.createTempDirectory("tomcat-base-dir");
@@ -79,5 +78,5 @@ public class TomcatServer {
 
         tomcat.start();
         tomcat.getServer().await();
-	}
+    }
 }

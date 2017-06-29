@@ -15,108 +15,96 @@
 */
 package com.juliuskrah.service.v1;
 
+import com.juliuskrah.entity.Student;
+import lombok.extern.slf4j.Slf4j;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import com.juliuskrah.entity.Student;
-
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * This represents the service resource for a Student entity
  * The resources should be name appropriately
- * 
+ *
  * @see http://www.restapitutorial.com/lessons/restfulresourcenaming.html
  */
 @Slf4j
 @Path("/v1/students") // <- required
-@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class StudentService {
-	private static List<Student> students;
-	
-	static {
-		students = new LinkedList<>();
-		students.add(new Student("1231"));
-		students.add(new Student("1232"));
-		students.add(new Student("1233"));
-		students.add(new Student("1234"));
-		students.add(new Student("1235"));
-		students.add(new Student("1236"));
-		students.add(new Student("1237"));
-		students.add(new Student("1238"));
-		students.add(new Student("1239"));
-		students.add(new Student("1240"));
-	}
-	
-	/**
-	 * 
-	 * @param id
-	 *            Identifier for the Student Resource
-	 * @return Student
-	 * @see http://docs.oracle.com/javaee/7/tutorial/jaxrs002.htm
-	 */
-	@GET
-	@Path("{id}")
-	public Response findStudent(@PathParam("id") String id) {
-		log.info("Getting student...");
-		Student student = new Student();
-		student.setId(id);
-		Response.ResponseBuilder builder = null;
+    private static List<Student> students;
 
-		int index = Collections.binarySearch(students, student, Comparator.comparing(Student::getId));
+    static {
+        students = new LinkedList<>();
+        students.add(new Student("1231"));
+        students.add(new Student("1232"));
+        students.add(new Student("1233"));
+        students.add(new Student("1234"));
+        students.add(new Student("1235"));
+        students.add(new Student("1236"));
+        students.add(new Student("1237"));
+        students.add(new Student("1238"));
+        students.add(new Student("1239"));
+        students.add(new Student("1240"));
+    }
 
-		if (index >= 0) {
-			builder = Response.ok()
-				.entity(students.get(index));
-		} else {
-			throw new WebApplicationException(Response.Status.NOT_FOUND);
-		}
+    /**
+     * @param id Identifier for the Student Resource
+     * @return Student
+     * @see http://docs.oracle.com/javaee/7/tutorial/jaxrs002.htm
+     */
+    @GET
+    @Path("{id}")
+    public Response findStudent(@PathParam("id") String id) {
+        log.info("Getting student...");
+        Student student = new Student();
+        student.setId(id);
+        Response.ResponseBuilder builder = null;
 
-		return builder.build();
-	}
+        int index = Collections.binarySearch(students, student, Comparator.comparing(Student::getId));
 
-	/**
-	 *
-	 * @param student
-	 * @return
-	 */
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createStudent(Student student) {
-		// A common application pattern is to use POST to create a resource and
-		// return a 201 response with a location header
-		// whose value is the URI to the newly created resource
-		log.info("Student: {}", student);
-		students.add(student);
-		Response.ResponseBuilder builder = null;
-		builder = Response.status(Response.Status.CREATED)
-				.location(URI.create(String.format("/v1/students/%s", student.getId())))
-				// or .header(HttpHeaders.LOCATION, String.format(BASE_URL,
-				// student.getId()))
-				.entity(student);
+        if (index >= 0) {
+            builder = Response.ok()
+                    .entity(students.get(index));
+        } else {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
 
-		return builder.build();
-	}
+        return builder.build();
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	@GET
-	public List<Student> findAllStudents() {
-		return students;
-	}
+    /**
+     * @param student
+     * @return
+     */
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createStudent(Student student) {
+        // A common application pattern is to use POST to create a resource and
+        // return a 201 response with a location header
+        // whose value is the URI to the newly created resource
+        log.info("Student: {}", student);
+        students.add(student);
+        Response.ResponseBuilder builder = null;
+        builder = Response.status(Response.Status.CREATED)
+                .location(URI.create(String.format("/v1/students/%s", student.getId())))
+                // or .header(HttpHeaders.LOCATION, String.format(BASE_URL,
+                // student.getId()))
+                .entity(student);
+
+        return builder.build();
+    }
+
+    /**
+     * @return
+     */
+    @GET
+    public List<Student> findAllStudents() {
+        return students;
+    }
 }
