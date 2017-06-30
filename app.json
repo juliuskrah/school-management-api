@@ -1,0 +1,10 @@
+{
+  "name": "School Management API",
+  "description": "A REST API for a simple School Management application",
+  "repository": "https://bitbucket.org/projectspartan/rest-service",
+  "keywords": [
+    "rest",
+    "api",
+    "school management"
+  ]
+}
