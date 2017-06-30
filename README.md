@@ -4,8 +4,8 @@ This repository contains an application using JAX-RS to build RESTful service. T
 
 ## Running
 ```bash
-> mvnw clean package
-> target/bin/school-management
+> mvnw clean compile exec:java
+> curl http://localhost:8080/v1/students
 ```
 
 ## Deployment to Heroku

@@ -19,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.juliuskrah</groupId>
     <artifactId>school-management</artifactId>
-    <version>v1-RELEASE</version>
+    <version>v1-BETA</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -29,6 +29,7 @@
         <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
         <groovy.version>2.4.12</groovy.version>
         <io.rest-assured.version>3.0.3</io.rest-assured.version>
+        <jetty.version>9.4.6.v20170531</jetty.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -70,19 +71,13 @@
             <artifactId>jersey-media-json-jackson</artifactId>
         </dependency>
 
-        <!-- Tomcat dependencies for embedded support -->
+        <!-- Jetty dependencies for embedded jetty -->
         <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>${org.apache.tomcat.embed.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-jasper</artifactId>
-            <version>${org.apache.tomcat.embed.version}</version>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-jetty-http</artifactId>
         </dependency>
 
-        <!-- Lombok dependencies [Generate common code fragments] -->
+        <!-- Lombok dependencies [Generate common code] -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -190,7 +185,7 @@
                     <assembleDirectory>target</assembleDirectory>
                     <programs>
                         <program>
-                            <mainClass>com.juliuskrah.TomcatServer</mainClass>
+                            <mainClass>com.juliuskrah.JettyServer</mainClass>
                             <id>${project.artifactId}</id>
                         </program>
                     </programs>
@@ -217,7 +212,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>com.juliuskrah.TomcatServer</mainClass>
+                    <mainClass>com.juliuskrah.JettyServer</mainClass>
                     <executable>maven</executable>
                 </configuration>
             </plugin>
