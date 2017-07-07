@@ -19,14 +19,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.juliuskrah</groupId>
     <artifactId>school-management</artifactId>
-    <version>v1-BETA</version>
-    <packaging>jar</packaging>
+    <version>v1-SNAPSHOT</version>
+    <packaging>war</packaging>
 
     <properties>
-        <appassembler-maven-plugin.version>2.0.0</appassembler-maven-plugin.version>
         <ch.qos.logback.version>1.2.3</ch.qos.logback.version>
-        <com.heroku.sdk.version>1.1.4</com.heroku.sdk.version>
-        <exec-maven-plugin.version>1.6.0</exec-maven-plugin.version>
         <groovy.version>2.4.12</groovy.version>
         <io.rest-assured.version>3.0.3</io.rest-assured.version>
         <jetty.version>9.4.6.v20170531</jetty.version>
@@ -39,21 +36,22 @@
         <org.jboss.version>7.0.5.GA</org.jboss.version>
         <org.projectlombok.version>1.16.16</org.projectlombok.version>
         <org.slf4j.version>1.7.25</org.slf4j.version>
+        <wildfly-swarm.version>2017.6.1</wildfly-swarm.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.jboss.bom</groupId>
-                <artifactId>jboss-eap-javaee7</artifactId>
-                <version>${org.jboss.version}</version>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>${org.glassfish.jersey.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>org.glassfish.jersey</groupId>
-                <artifactId>jersey-bom</artifactId>
-                <version>${org.glassfish.jersey.version}</version>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>bom</artifactId>
+                <version>${wildfly-swarm.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -69,12 +67,6 @@
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
-        </dependency>
-
-        <!-- Jetty dependencies for embedded jetty -->
-        <dependency>
-            <groupId>org.glassfish.jersey.containers</groupId>
-            <artifactId>jersey-container-jetty-http</artifactId>
         </dependency>
 
         <!-- Lombok dependencies [Generate common code] -->
@@ -170,51 +162,23 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
-            <!-- Easy deployment to Heroku PaaS -->
             <plugin>
-                <groupId>com.heroku.sdk</groupId>
-                <artifactId>heroku-maven-plugin</artifactId>
-                <version>${com.heroku.sdk.version}</version>
-            </plugin>
-            <!-- Builds an executable script [mvnw clean package && sh target/bin/school-management] -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>appassembler-maven-plugin</artifactId>
-                <version>${appassembler-maven-plugin.version}</version>
-                <configuration>
-                    <assembleDirectory>target</assembleDirectory>
-                    <programs>
-                        <program>
-                            <mainClass>com.juliuskrah.JettyServer</mainClass>
-                            <id>${project.artifactId}</id>
-                        </program>
-                    </programs>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>assemble</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Execute code from the command line [mvnw clean compile exec:java] -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${exec-maven-plugin.version}</version>
+                <groupId>org.wildfly.swarm</groupId>
+                <artifactId>wildfly-swarm-plugin</artifactId>
+                <version>${wildfly-swarm.version}</version>
+                <!--<configuration>
+                    <properties>
+                        <swarm.context.path>${project.build.finalName}</swarm.context.path>
+                        <swarm.port.offset>100</swarm.port.offset>
+                    </properties>
+                </configuration>-->
                 <executions>
                     <execution>
                         <goals>
-                            <goal>java</goal>
+                            <goal>package</goal>
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <mainClass>com.juliuskrah.JettyServer</mainClass>
-                    <executable>maven</executable>
-                </configuration>
             </plugin>
         </plugins>
     </build>

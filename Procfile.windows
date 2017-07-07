@@ -1,1 +1,1 @@
-web: sh target\bin\school-management
+web: java -jar target\school-management-swarm.jar -Dswarm.http.port=%PORT%

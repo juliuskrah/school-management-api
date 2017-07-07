@@ -17,6 +17,7 @@ package com.juliuskrah.service.v1;
 
 import com.juliuskrah.entity.Student;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -31,7 +32,7 @@ import java.util.List;
  * This represents the service resource for a Student entity
  * The resources should be name appropriately
  *
- * @see http://www.restapitutorial.com/lessons/restfulresourcenaming.html
+ * @link http://www.restapitutorial.com/lessons/restfulresourcenaming.html
  */
 @Slf4j
 @Path("/v1/students") // <- required
@@ -54,14 +55,17 @@ public class StudentService {
     }
 
     /**
+     * This returns a student resource with the specified {@code id}. Returns Status code {@code 404}
+     * if no resource is found with the specified {@code id}
+     *
      * @param id Identifier for the Student Resource
-     * @return Student
-     * @see http://docs.oracle.com/javaee/7/tutorial/jaxrs002.htm
+     * @return Response this wraps the Student entity
+     * @link http://docs.oracle.com/javaee/7/tutorial/jaxrs002.htm
      */
     @GET
     @Path("{id}")
     public Response findStudent(@PathParam("id") String id) {
-        log.info("Getting student...");
+        log.info("Getting student {}", id);
         Student student = new Student();
         student.setId(id);
         Response.ResponseBuilder builder = null;
@@ -79,6 +83,10 @@ public class StudentService {
     }
 
     /**
+     * Creates a new Student resource with the supplied payload.
+     * Sends back a Response code of {@code 201} when successfully created. A {@code Location} header is also
+     * returned to the client with the location of the newly created resource
+     *
      * @param student
      * @return
      */
@@ -101,10 +109,16 @@ public class StudentService {
     }
 
     /**
-     * @return
+     * This returns a collection of all student resources found
+     *
+     * @return {@code List<Student>} A collection of all Student resource
      */
     @GET
     public List<Student> findAllStudents() {
+        // TODO change to remote address. This logs all addresses making a service call
+        MDC.put("username", "Julius");
+        log.debug("Returning list of Students...");
+        MDC.remove("username");
         return students;
     }
 }
