@@ -98,15 +98,30 @@ public class StudentServiceTest extends JerseyTest {
     public void testCreateStudentWithRestAssured() {
         // @formatter:off
         Map<String, String> student = new HashMap<>();
-        student.put("id", "1241");
+        student.put("id", "1242");
 
         given()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(student)
                 .when().post("/v1/students")
                 .then()
-                .body("id", equalTo("1241"))
+                .body("id", equalTo("1242"))
                 .statusCode(201);
+        // @formatter:on
+    }
+
+    @Test
+    public void testCreateStudentWithRestAssuredReturnsConflict() {
+        // @formatter:off
+        Map<String, String> student = new HashMap<>();
+        student.put("id", "1239");
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(student)
+                .when().post("/v1/students")
+                .then()
+                .statusCode(409);
         // @formatter:on
     }
 

@@ -1,1 +1,1 @@
-web: java -Dswarm.http.port=$PORT -jar ./target/school-management-swarm.jar
+web: java -jar ./target/school-management-swarm.jar

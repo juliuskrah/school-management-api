@@ -31,8 +31,8 @@ import java.util.List;
 /**
  * This represents the service resource for a Student entity
  * The resources should be name appropriately
- *
- * @link http://www.restapitutorial.com/lessons/restfulresourcenaming.html
+ * <p>
+ * {@link http://www.restapitutorial.com/lessons/restfulresourcenaming.html}
  */
 @Slf4j
 @Path("/v1/students") // <- required
@@ -60,7 +60,7 @@ public class StudentService {
      *
      * @param id Identifier for the Student Resource
      * @return Response this wraps the Student entity
-     * @link http://docs.oracle.com/javaee/7/tutorial/jaxrs002.htm
+     * {@link http://docs.oracle.com/javaee/7/tutorial/jaxrs002.htm}
      */
     @GET
     @Path("{id}")
@@ -75,9 +75,8 @@ public class StudentService {
         if (index >= 0) {
             builder = Response.ok()
                     .entity(students.get(index));
-        } else {
+        } else
             throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
 
         return builder.build();
     }
@@ -97,15 +96,19 @@ public class StudentService {
         // return a 201 response with a location header
         // whose value is the URI to the newly created resource
         log.info("Student: {}", student);
-        students.add(student);
-        Response.ResponseBuilder builder = null;
-        builder = Response.status(Response.Status.CREATED)
-                .location(URI.create(String.format("/v1/students/%s", student.getId())))
-                // or .header(HttpHeaders.LOCATION, String.format(BASE_URL,
-                // student.getId()))
-                .entity(student);
+        int index = Collections.binarySearch(students, student, Comparator.comparing(Student::getId));
+        if (index < 0) {
+            students.add(student);
+            Response.ResponseBuilder builder = null;
+            builder = Response.status(Response.Status.CREATED)
+                    .location(URI.create(String.format("/v1/students/%s", student.getId())))
+                    // or .header(HttpHeaders.LOCATION, String.format(BASE_URL,
+                    // student.getId()))
+                    .entity(student);
 
-        return builder.build();
+            return builder.build();
+        } else
+            throw new WebApplicationException(Response.Status.CONFLICT);
     }
 
     /**
