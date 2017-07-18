@@ -21,4 +21,4 @@ jobs:
           path: target/surefire-reports
 
       - store_artifacts:
-          path: target/rest-service.war
+          path: target/school-management.war
