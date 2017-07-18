@@ -35,7 +35,7 @@ import java.util.List;
  * {@link http://www.restapitutorial.com/lessons/restfulresourcenaming.html}
  */
 @Slf4j
-@Path("/v1/students") // <- required
+@Path("/v1/students/") // <- required
 @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 public class StudentService {
     private static List<Student> students;

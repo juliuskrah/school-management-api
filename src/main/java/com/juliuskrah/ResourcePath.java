@@ -18,6 +18,5 @@ package com.juliuskrah;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("/")
-public class ResourcePath extends Application {
-}
+@ApplicationPath("/api/")
+public class ResourcePath extends Application {}
