@@ -2,10 +2,16 @@
 # School Management RESTful Service
 This repository contains an application using JAX-RS to build RESTful service. The JAX-RS implementation used for this project is `Jersey`.
 
-## Running
+## Quick Start
+Run the following commands
 ```bash
-> mvnw clean compile exec:java
-> curl http://localhost:8080/v1/students
+> mvnw clean package
+> java -jar target\school-management-swarm.jar -Sdev
+```
+
+Open another terminal
+```bash
+> curl -i -X GET -H "Accept: application/json" http://localhost:9997/api/v1/students
 ```
 
 ## Deployment to Heroku
