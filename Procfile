@@ -1,1 +1,1 @@
-web: java -jar ./target/school-management-swarm.jar
+web: java -jar target/*.jar
