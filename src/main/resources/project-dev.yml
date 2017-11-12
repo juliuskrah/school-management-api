@@ -1,3 +1,4 @@
 swarm:
   http:
-    port: $PORT
+#   port: 2222
+    port: ${env.PORT}

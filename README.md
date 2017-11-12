@@ -6,7 +6,7 @@ This repository contains an application using JAX-RS to build RESTful service. T
 Run the following commands
 ```bash
 > mvnw clean package
-> java -jar target\school-management-swarm.jar -Sdev
+> java -Dswarm.http.port=9997 -jar target\school-management-swarm.jar -Sdev
 ```
 
 Open another terminal
